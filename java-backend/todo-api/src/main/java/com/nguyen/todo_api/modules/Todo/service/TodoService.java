@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +14,11 @@ import com.nguyen.todo_api.modules.Todo.dto.TodoRequest;
 import com.nguyen.todo_api.modules.Todo.dto.TodoResponse;
 import com.nguyen.todo_api.modules.Todo.entity.Todo;
 import com.nguyen.todo_api.modules.Todo.repository.TodoRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import com.nguyen.todo_api.modules.Todo.dto.TodoUpdateRequest;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 
@@ -27,15 +33,13 @@ public class TodoService {
     public List<TodoResponse> findAll(TodoFilterRequest request) {
         int page = Optional.ofNullable(request.page()).orElse(1);
         int limit = Optional.ofNullable(request.limit()).orElse(10);
-        String status = request.status();
         String search = StringUtils.hasText(request.search()) ? request.search() : null;
         String sortByField = Optional.ofNullable(request.sortBy()).orElse("createdAt");
         String sortOrder = Optional.ofNullable(request.sortOrder()).orElse("desc");
 
-        Boolean completed = null;
-        if (StringUtils.hasText(status)) {
-            completed = "done".equalsIgnoreCase(status);
-        }
+        final Boolean completed = StringUtils.hasText(request.status())
+                ? "done".equalsIgnoreCase(request.status())
+                : null;
 
         Sort.Direction direction = "asc".equalsIgnoreCase(sortOrder)
                 ? Sort.Direction.ASC
@@ -43,7 +47,16 @@ public class TodoService {
 
         var pageable = PageRequest.of(Math.max(page - 1, 0), limit, Sort.by(direction, sortByField));
 
-        return todoRepository.search(completed, search, pageable)
+        Specification<Todo> spec = Specification.where(null);
+        if (completed != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("completed"), completed));
+        }
+        if (StringUtils.hasText(search)) {
+            String pattern = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("title")), pattern));
+        }
+
+        return todoRepository.findAll(spec, pageable)
                 .map(this::toResponse)
                 .getContent();
     }
@@ -53,6 +66,27 @@ public class TodoService {
         Todo todo = new Todo();
         todo.setTitle(request.title());
         todo.setDescription(request.description());
+        Todo saved = todoRepository.save(todo);
+        return toResponse(saved);
+    }
+
+    // Update todo
+    public TodoResponse updateTodo(TodoUpdateRequest request, UUID id) {
+        Todo todo = todoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Todo not found: " + id));
+
+        if (request.title() != null) {
+            todo.setTitle(request.title());
+        }
+
+        if (request.description() != null) {
+            todo.setDescription(request.description());
+        }
+
+        if (request.completed() != null) {
+            todo.setCompleted(request.completed());
+        }
+
         Todo saved = todoRepository.save(todo);
         return toResponse(saved);
     }

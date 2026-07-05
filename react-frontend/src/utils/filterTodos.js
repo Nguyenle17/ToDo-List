@@ -33,7 +33,7 @@ export function filterTodos(todos, { status = FILTERS.ALL, query = '' } = {}) {
 export function countByStatus(todos) {
   return {
     total: todos.length,
-    done: todos.filter((t) => t.done).length,
-    active: todos.filter((t) => !t.done).length,
+    done: todos.filter((t) => t.completed).length,
+    active: todos.filter((t) => !t.completed).length,
   };
 }

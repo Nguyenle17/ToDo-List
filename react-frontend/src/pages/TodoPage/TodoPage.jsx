@@ -25,7 +25,7 @@ export default function TodoPage() {
     [status, debouncedQuery, sortOrder]
   );
 
-  const { todos = [], loading, error, addTodo, editTodo, removeTodo, toggleTodo } = useTodos(filter);
+  const { todos = [], loading, error, addTodo, editTodo, removeTodo } = useTodos(filter);
 
   const counts = useMemo(() => countByStatus(todos), [todos]);
 
@@ -70,7 +70,6 @@ export default function TodoPage() {
       {!loading && !error && (
         <TodoList
           todos={todos}
-          onToggle={toggleTodo}
           onEdit={editTodo}
           onDelete={removeTodo}
           emptyMessage={emptyMessage}

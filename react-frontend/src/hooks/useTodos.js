@@ -35,13 +35,6 @@ export function useTodos(filter) {
         },
     });
 
-    const toggleTodo = useMutation({
-        mutationFn: todoApi.toggleTodo,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["todos"] });
-        },
-    });
-
     return {
         todos,
         loading,
@@ -49,6 +42,5 @@ export function useTodos(filter) {
         addTodo: addTodo.mutate,
         editTodo: editTodo.mutate,
         removeTodo: removeTodo.mutate,
-        toggleTodo: toggleTodo.mutate,
     };
 }

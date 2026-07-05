@@ -25,5 +25,4 @@ export const todoApi = {
   createTodo: (data) => api.post('/todos', data),
   updateTodo: (id, data) => api.patch(`/todos/${id}`, data),
   deleteTodo: (id) => api.delete(`/todos/${id}`),
-  toggleTodo: (id) => api.patch(`/todos/${id}/toggle`),
 };

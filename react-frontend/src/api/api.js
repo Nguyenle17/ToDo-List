@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
 
 async function parseErrorMessage(response, fallback) {
     try {
@@ -35,12 +35,12 @@ class Api {
         if (!response.ok) {
             throw new Error(await parseErrorMessage(response, `GET ${ENDPOINT} failed: ${response.status}`));
         }
+        
         return parseBody(response);
     }
 
     async post(ENDPOINT, DATA, HEADERS = 'application/json') {
         const isFormData = DATA instanceof FormData;
-
         const response = await fetch(this.BASE_URL + ENDPOINT, {
             method: 'POST',
             credentials: 'include',
