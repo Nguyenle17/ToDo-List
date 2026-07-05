@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Color -- "field ledger" palette: cool paper, deep teal ink, brass fastener accent */
+  --color-bg: #eef1ef;
+  --color-surface: #ffffff;
+  --color-ink: #16323f;
+  --color-ink-soft: #5b6f76;
+  --color-ink-faint: #9aa8ac;
+  --color-accent: #b8892b;      /* brass / stamp-ink amber */
+  --color-accent-soft: #f4e9d3;
+  --color-done: #4c7a5d;        /* moss green -- completion stamp */
+  --color-done-soft: #e4ede6;
+  --color-danger: #b4443c;      /* brick red -- delete */
+  --color-danger-soft: #f6e6e4;
+  --color-border: #d8dfdc;
+
+  /* Type */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+
+  /* Layout */
+  --radius: 3px;
+  --shadow-card: 0 1px 2px rgba(22, 50, 63, 0.06), 0 1px 0 rgba(22, 50, 63, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(22,50,63,0.045) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

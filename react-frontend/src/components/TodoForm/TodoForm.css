@@ -1,0 +1,66 @@
+.todo-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 10px 16px;
+  margin: 18px;
+}
+
+.todo-form__hole {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.todo-form__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-ink);
+  padding: 6px 0;
+}
+
+.todo-form__input::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.todo-form__input:focus {
+  outline: none;
+}
+
+.todo-form__submit {
+  border: 1px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-surface);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.todo-form__submit:hover:not(:disabled) {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.todo-form__submit:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.todo-form__submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

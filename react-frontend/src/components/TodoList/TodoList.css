@@ -1,0 +1,16 @@
+.todo-list {
+  list-style: none;
+  margin: 18px;
+  padding: 6px 10px;
+}
+
+.todo-list__empty {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--color-ink-faint);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  margin: 18px;
+}

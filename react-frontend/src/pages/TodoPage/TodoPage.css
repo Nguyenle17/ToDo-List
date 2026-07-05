@@ -1,0 +1,37 @@
+.todo-page__header {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.todo-page__form {
+  flex: 1;
+  min-width: 0; / 
+}
+
+.todo-page__search {
+  flex: 0 0 220px;
+}
+
+.todo-page__status {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  padding: 12px 2px;
+}
+
+.todo-page__status--error {
+  color: var(--color-danger);
+}
+
+@media (max-width: 600px) {
+  .todo-page__header {
+    flex-direction: column;
+  }
+  .todo-page__search {
+    flex-basis: auto;
+    width: 100%;
+  }
+}

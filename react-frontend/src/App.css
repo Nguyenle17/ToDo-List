@@ -1,0 +1,21 @@
+.app__content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.app__placeholder {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .app__content {
+    padding: 24px 16px 64px;
+  }
+}
