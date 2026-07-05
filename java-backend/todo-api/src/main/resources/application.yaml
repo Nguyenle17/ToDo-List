@@ -1,3 +1,19 @@
+server:
+  port: 3000
+
 spring:
   application:
     name: todo-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/todo_db
+    username: postgres
+    password: 123456
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  docker:
+    compose:
+      enabled: false
