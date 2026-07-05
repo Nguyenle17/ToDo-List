@@ -21,19 +21,11 @@ export function filterTodos(todos, { status = FILTERS.ALL, query = '' } = {}) {
   return todos.filter((todo) => {
     const matchesStatus =
       status === FILTERS.ALL ||
-      (status === FILTERS.DONE && todo.done) ||
-      (status === FILTERS.ACTIVE && !todo.done);
+      (status === FILTERS.DONE && todo.completed) ||
+      (status === FILTERS.ACTIVE && !todo.completed);
 
     const matchesQuery = q === '' || todo.title.toLowerCase().includes(q);
 
     return matchesStatus && matchesQuery;
   });
-}
-
-export function countByStatus(todos) {
-  return {
-    total: todos.length,
-    done: todos.filter((t) => t.completed).length,
-    active: todos.filter((t) => !t.completed).length,
-  };
 }

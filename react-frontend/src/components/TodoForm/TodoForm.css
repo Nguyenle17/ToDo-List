@@ -25,6 +25,7 @@
   font-family: var(--font-body);
   color: var(--color-ink);
   padding: 6px 0;
+  min-width: 0;
 }
 
 .todo-form__input::placeholder {
@@ -74,4 +75,28 @@
 .todo-form__submit:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .todo-form {
+    flex-wrap: wrap;
+    margin: 12px;
+    padding: 10px 12px;
+  }
+
+  .todo-form__input--title,
+  .todo-form__input--description {
+    flex: 1 1 100%;
+  }
+
+  .todo-form__input--description {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 6px;
+  }
+
+  .todo-form__submit {
+    width: 100%;
+  }
 }

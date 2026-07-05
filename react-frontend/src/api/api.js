@@ -4,9 +4,8 @@ async function parseErrorMessage(response, fallback) {
     try {
         const data = await response.json();
         if (data && typeof data.message === 'string') return data.message;
-        if (data && typeof data.error === 'string') return data.error;
     } catch {
-       throw new Error(fallback);
+        
     }
     return fallback;
 }

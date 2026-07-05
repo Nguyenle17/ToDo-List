@@ -24,10 +24,12 @@
   line-height: 1;
   cursor: default;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .search-bar__input {
   flex: 1;
+  min-width: 0;
   border: none;
   background: transparent;
   font-family: var(--font-body);
@@ -52,8 +54,20 @@
   line-height: 1;
   cursor: pointer;
   padding: 0 2px;
+  flex-shrink: 0;
 }
 
 .search-bar__clear:hover {
   color: var(--color-danger);
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    margin: 12px;
+    padding: 8px 12px;
+  }
+
+  .search-bar__input {
+    font-size: 14px;
+  }
 }

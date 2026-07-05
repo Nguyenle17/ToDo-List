@@ -16,6 +16,9 @@ export function useTodos(filter) {
 
     const todos = data?.content ?? [];
     const totalPages = data?.totalPages ?? 1;
+    const totalTodos = data?.totalElements ?? 0;
+
+    console.log(data)
 
     const addTodo = useMutation({
         mutationFn: todoApi.createTodo,
@@ -41,6 +44,7 @@ export function useTodos(filter) {
     return {
         todos,
         totalPages,
+        totalTodos,
         loading,
         error,
         addTodo: addTodo.mutate,

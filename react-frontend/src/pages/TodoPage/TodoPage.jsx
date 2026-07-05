@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTodos } from '@/hooks/useTodos';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
-import { FILTERS, countByStatus } from '@/utils/filterTodos';
+import { FILTERS } from '@/utils/filterTodos';
 import TodoForm from '@/components/TodoForm/TodoForm';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import FilterTabs from '@/components/FilterTab/FilterTab';
 import TodoList from '@/components/TodoList/TodoList';
 import Pagination from '@/components/Pagination/Pagination';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import './TodoPage.css';
 
 function toApiStatus(status) {
@@ -20,7 +21,6 @@ export default function TodoPage() {
   const [query, setQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('desc');
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [limit] = useState(5);
   const debouncedQuery = useDebouncedValue(query, 300);
 
@@ -40,9 +40,7 @@ export default function TodoPage() {
     [status, debouncedQuery, sortOrder, page, limit]
   );
 
-  const { todos, totalPages, loading, error, addTodo, editTodo, removeTodo } = useTodos(filter);
-
-  const counts = useMemo(() => countByStatus(todos), [todos]);
+  const { todos, totalPages, totalTodos, loading, error, addTodo, editTodo, removeTodo } = useTodos(filter);
 
   const handleSortOrderChange = () => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
@@ -55,19 +53,14 @@ export default function TodoPage() {
 
   return (
     <section className="todo-page">
-      <div className="todo-page__header">
-        <div className="todo-page__form">
-          <TodoForm onAdd={addTodo} />
-        </div>
-        <div className="todo-page__search">
-          <SearchBar value={query} onChange={setQuery} />
-        </div>
-      </div>
+
+      <SearchBar value={query} onChange={setQuery} />
+      <TodoForm onAdd={addTodo} />
 
       <FilterTabs
         value={status}
         onChange={setStatus}
-        counts={counts}
+        count={totalTodos}
         sortOrder={sortOrder}
         onSortOrderChange={handleSortOrderChange}
       />
@@ -75,13 +68,7 @@ export default function TodoPage() {
       {loading && <p className="todo-page__status">Đang tải danh sách…</p>}
 
       {error && (
-        <p className="todo-page__status todo-page__status--error">
-          {error instanceof Error
-            ? error.message
-            : typeof error === 'string'
-              ? error
-              : 'Đã có lỗi xảy ra. Vui lòng thử lại.'}
-        </p>
+        <ErrorMessage error={error} className="todo-page__status" />
       )}
 
       {!loading && !error && (
