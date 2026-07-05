@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTodos } from '@/hooks/useTodos';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { FILTERS, countByStatus } from '@/utils/filterTodos';
@@ -6,6 +6,7 @@ import TodoForm from '@/components/TodoForm/TodoForm';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import FilterTabs from '@/components/FilterTab/FilterTab';
 import TodoList from '@/components/TodoList/TodoList';
+import Pagination from '@/components/Pagination/Pagination';
 import './TodoPage.css';
 
 function toApiStatus(status) {
@@ -18,24 +19,34 @@ export default function TodoPage() {
   const [status, setStatus] = useState(FILTERS.ALL);
   const [query, setQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit] = useState(5);
   const debouncedQuery = useDebouncedValue(query, 300);
 
+  useEffect(() => {
+    setPage(1);
+  }, [status, debouncedQuery, sortOrder]);
+
   const filter = useMemo(
-    () => ({ status: toApiStatus(status), search: debouncedQuery, sortBy: 'createdAt', sortOrder: sortOrder }),
-    [status, debouncedQuery, sortOrder]
+    () => ({
+      page,
+      limit,
+      status: toApiStatus(status),
+      search: debouncedQuery,
+      sortBy: 'createdAt',
+      sortOrder,
+    }),
+    [status, debouncedQuery, sortOrder, page, limit]
   );
 
-  const { todos = [], loading, error, addTodo, editTodo, removeTodo } = useTodos(filter);
+  const { todos, totalPages, loading, error, addTodo, editTodo, removeTodo } = useTodos(filter);
 
   const counts = useMemo(() => countByStatus(todos), [todos]);
 
   const handleSortOrderChange = () => {
-    if (sortOrder === 'asc') {
-      setSortOrder('desc');
-    } else {
-      setSortOrder('asc');
-    }
-  }
+    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+  };
 
   const emptyMessage =
     todos.length === 0 && !debouncedQuery && status === FILTERS.ALL
@@ -53,7 +64,13 @@ export default function TodoPage() {
         </div>
       </div>
 
-      <FilterTabs value={status} onChange={setStatus} counts={counts} sortOrder={sortOrder} onSortOrderChange={handleSortOrderChange} />
+      <FilterTabs
+        value={status}
+        onChange={setStatus}
+        counts={counts}
+        sortOrder={sortOrder}
+        onSortOrderChange={handleSortOrderChange}
+      />
 
       {loading && <p className="todo-page__status">Đang tải danh sách…</p>}
 
@@ -68,12 +85,15 @@ export default function TodoPage() {
       )}
 
       {!loading && !error && (
-        <TodoList
-          todos={todos}
-          onEdit={editTodo}
-          onDelete={removeTodo}
-          emptyMessage={emptyMessage}
-        />
+        <>
+          <TodoList
+            todos={todos}
+            onEdit={editTodo}
+            onDelete={removeTodo}
+            emptyMessage={emptyMessage}
+          />
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        </>
       )}
     </section>
   );

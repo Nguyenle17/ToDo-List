@@ -91,6 +91,14 @@ public class TodoService {
         return toResponse(saved);
     }
 
+    // Delete todo
+    public void deleteTodo(UUID id) {
+        Todo todo = todoRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Todo not found: " + id));
+
+        todoRepository.deleteById(id);
+    }
+
     private TodoResponse toResponse(Todo todo) {
         return new TodoResponse(
                 todo.getId(),

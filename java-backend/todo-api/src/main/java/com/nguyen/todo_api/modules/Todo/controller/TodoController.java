@@ -3,6 +3,8 @@ package com.nguyen.todo_api.modules.Todo.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,9 +40,16 @@ public class TodoController {
         return todoService.addTodo(request);
     }
 
-    // Update todo status
+    // Update todo 
     @PatchMapping("/{id}")
     public TodoResponse updateTodo(@PathVariable UUID id, @RequestBody TodoUpdateRequest request) {
         return todoService.updateTodo(request, id);
+    }
+
+    // Delete todo
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable UUID id) {
+        todoService.deleteTodo(id);
+        return ResponseEntity.noContent().build();
     }
 }

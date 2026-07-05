@@ -25,4 +25,15 @@ export const todoApi = {
   createTodo: (data) => api.post('/todos', data),
   updateTodo: (id, data) => api.patch(`/todos/${id}`, data),
   deleteTodo: (id) => api.delete(`/todos/${id}`),
+  getTotal: (filter = {}) => {
+     const qs = buildQuery({
+      page: filter.page ?? 1,
+      limit: filter.limit ?? 10,
+      status: filter.status ?? '',
+      search: filter.search ?? '',
+      sortBy: filter.sortBy ?? 'createdAt',
+      sortOrder: filter.sortOrder ?? 'desc',
+    });
+    return api.get(`/todos/total-pages?${qs}`)
+  }
 };

@@ -1,14 +1,14 @@
 .todo-page__header {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-center;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
   margin-bottom: 4px;
 }
 
 .todo-page__form {
   flex: 1;
-  min-width: 0; / 
+  min-width: 0;
 }
 
 .todo-page__search {

@@ -35,6 +35,13 @@ export function useTodos(filter) {
         },
     });
 
+    const totalPage = useMutation({
+        mutationFn: todoApi.totalPage,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["total-pages"] });
+        },
+    })
+
     return {
         todos,
         loading,
