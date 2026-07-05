@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
 
 async function parseErrorMessage(response, fallback) {
     try {
@@ -22,7 +22,7 @@ async function parseBody(response) {
 
 class Api {
     constructor() {
-        this.BASE_URL = BASE_URL;
+        this.BASE_URL = API_URL;
     }
 
     async get(ENDPOINT) {
