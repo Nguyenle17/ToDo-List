@@ -1,6 +1,5 @@
 package com.nguyen.todo_api.modules.Todo.controller;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nguyen.todo_api.modules.Todo.dto.PagedResponse;
 import com.nguyen.todo_api.modules.Todo.dto.TodoFilterRequest;
 import com.nguyen.todo_api.modules.Todo.dto.TodoRequest;
 import com.nguyen.todo_api.modules.Todo.dto.TodoResponse;
@@ -30,7 +30,7 @@ public class TodoController {
     private final TodoService todoService;
     // Get all todos
     @GetMapping
-    public List<TodoResponse> getAllTodos(@ModelAttribute TodoFilterRequest request) {
+    public PagedResponse<TodoResponse> getAllTodos(@ModelAttribute TodoFilterRequest request) {
         return todoService.findAll(request);
     }
 

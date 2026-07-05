@@ -5,7 +5,7 @@ export function useTodos(filter) {
     const queryClient = useQueryClient();
 
     const {
-        data: todos = [],
+        data,
         isLoading: loading,
         error,
     } = useQuery({
@@ -13,6 +13,9 @@ export function useTodos(filter) {
         queryFn: () => todoApi.getTodos(filter),
         staleTime: 1000 * 60 * 5,
     });
+
+    const todos = data?.content ?? [];
+    const totalPages = data?.totalPages ?? 1;
 
     const addTodo = useMutation({
         mutationFn: todoApi.createTodo,
@@ -35,15 +38,9 @@ export function useTodos(filter) {
         },
     });
 
-    const totalPage = useMutation({
-        mutationFn: todoApi.totalPage,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["total-pages"] });
-        },
-    })
-
     return {
         todos,
+        totalPages,
         loading,
         error,
         addTodo: addTodo.mutate,

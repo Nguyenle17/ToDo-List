@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.nguyen.todo_api.modules.Todo.dto.PagedResponse;
 import com.nguyen.todo_api.modules.Todo.dto.TodoFilterRequest;
 import com.nguyen.todo_api.modules.Todo.dto.TodoRequest;
 import com.nguyen.todo_api.modules.Todo.dto.TodoResponse;
@@ -30,7 +31,7 @@ public class TodoService {
 
 
     // Get all todo
-    public List<TodoResponse> findAll(TodoFilterRequest request) {
+    public PagedResponse<TodoResponse> findAll(TodoFilterRequest request) {
         int page = Optional.ofNullable(request.page()).orElse(1);
         int limit = Optional.ofNullable(request.limit()).orElse(10);
         String search = StringUtils.hasText(request.search()) ? request.search() : null;
@@ -56,9 +57,20 @@ public class TodoService {
             spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("title")), pattern));
         }
 
-        return todoRepository.findAll(spec, pageable)
+        var pageResult = todoRepository.findAll(spec, pageable);
+
+        List<TodoResponse> content = pageResult.getContent()
+                .stream()
                 .map(this::toResponse)
-                .getContent();
+                .toList();
+
+        return new PagedResponse<>(
+                content,
+                page,
+                limit,
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages()
+        );
     }
 
     // Add todo
