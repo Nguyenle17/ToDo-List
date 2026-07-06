@@ -38,10 +38,10 @@ mvn spring-boot:run
 
 Backend mặc định chạy tại: **http://localhost:3000**
 
-> **Lưu ý:** nếu gặp lỗi `Port 3000 was already in use` hoặc `Port 5432 was already in use`, có thể có process khác (Postgres cài native trên máy, hoặc app khác) đang chiếm cổng. Kiểm tra bằng:
+> **Lưu ý:** nếu gặp lỗi `Port 3000 was already in use` hoặc `Port 5433 was already in use`, có thể có process khác (Postgres cài native trên máy, hoặc app khác) đang chiếm cổng. Kiểm tra bằng:
 > ```bash
 > netstat -ano | findstr :3000
-> netstat -ano | findstr :5432
+> netstat -ano | findstr :5433
 > ```
 > rồi tắt process đó (`taskkill /PID <PID> /F`) hoặc đổi cổng trong `application.yml` / `docker-compose.yml`.
 
@@ -55,7 +55,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/todo_db
+    url: jdbc:postgresql://localhost:5433/todo_db
     username: postgres
     password: 123456
   jpa:
